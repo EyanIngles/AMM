@@ -70,17 +70,17 @@ describe('AMM', () => {
 
 
     })
-    describe('Deployment of AMM', () => {
-        it('AMM has an contract address', async () => {
-        expect(amm.address).to.not.equal('0x0')
-        })
+describe('Deployment of AMM', () => {
+    it('AMM has an contract address', async () => {
+    expect(amm.address).to.not.equal('0x0')
+})
 
-        it('AMM Tracks token 1 address', async () => {
-        expect(await amm.token1()).to.equal(token1.address)
-        })
-        it('AMM Tracks token 2 address', async () => {
-        expect(await amm.token2()).to.equal(token2.address)
-        })
+    it('AMM Tracks token 1 address', async () => {
+    expect(await amm.token1()).to.equal(token1.address)
+})
+it('AMM Tracks token 2 address', async () => {
+    expect(await amm.token2()).to.equal(token2.address)
+})
 
-    })
+})
 })
