@@ -114,24 +114,17 @@ describe('AMM', () => {
 
             //LP approves more liquidity 50k tokens
             amount = tokens(50000)
-            transaction = await token1.connect(liquidityProvider).approve(amm.address, amount)
+            transaction = await token1.connect(deployer).approve(amm.address, amount)
             await transaction.wait()
-            transaction = await token2.connect(liquidityProvider).approve(amm.address, amount)
+            transaction = await token2.connect(deployer).approve(amm.address, amount)
             await transaction.wait()
 
-            // Calculate token 2 deposit amount
-            let token2Deposit = await amm.calculateToken2Deposit(amount)
             //LP adds liquidity for approved amount.
-            transaction = await amm.connect(liquidityProvider).addLiquidity(amount, token2Deposit)
+            transaction = await amm.connect(liquidityProvider).addLiquidity(amount, amount)
             await transaction.wait()
 
-            expect(await amm.shares(liquidityProvider.address)).to.equal(tokens(50))
-
-            //deployer should still have shares
-            expect(await amm.shares(deployer.address)).to.equal(tokens(100))
-
-            // Pool should have 150 shares
-            expect(await amm.totalShares()).to.equal(tokens(150))
+            expect(await amm.shares(liquidityProvider.address)).to.equal(amount)
+            console.log(await amm.shares(liquidityProvider).toString())
         })
     })
 })

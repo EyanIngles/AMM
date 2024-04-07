@@ -25,32 +25,18 @@ contract AMM {
         require(token1.transferFrom(msg.sender, address(this), _token1Amount), 'failed to tranfer token 1');
         require(token2.transferFrom(msg.sender, address(this), _token1Amount), 'failed to tranfer token 2');
 
-
+        token1Balance += _token1Amount;
+        token2Balance += _token2Amount;
+        K = token1Balance * token2Balance;
 
         uint256 share;
         if (totalShares == 0) {
             share = 100 * PRECISION;
         } else {
-            uint256 share1 = (totalShares *_token1Amount) / token1Balance;
-            uint256 share2 = (totalShares *_token2Amount) / token2Balance;
-            require(( share1/ 10**3) == ( share2/ 10**3), 'must provide equal token amounts');
-            share = share1;
+
         }
-
-        // manage pool
-        token1Balance += _token1Amount;
-        token2Balance += _token2Amount;
-        K = token1Balance * token2Balance;
-
-        // updates shares
         totalShares += share;
         shares[msg.sender] += share;
-    }
-    function calculateToken2Deposit(uint256 _token1Amount) public view returns(uint256 token2Amount) {
-        token2Amount =  (token2Balance * _token1Amount) / token1Balance;
-    }
 
-    function calculateToken1Deposit(uint256 _token2Amount) public view returns(uint256 token1Amount) {
-        token1Amount =  (token1Balance * _token2Amount) / token2Balance;
     }
 }

@@ -1,4 +1,3 @@
-const { getValue } = require('@testing-library/user-event/dist/utils');
 const { expect } = require('chai');
 const { ethers } = require('hardhat');
 
@@ -100,38 +99,12 @@ describe('AMM', () => {
             transaction = await amm.connect(deployer).addLiquidity(amount, amount)
             await transaction.wait()
 
-            //checks amm receives tokens
             expect(await token1.balanceOf(amm.address)).to.equal(amount)
             expect(await token2.balanceOf(amm.address)).to.equal(amount)
 
             expect(await amm.token1Balance()).to.equal(amount)
             expect(await amm.token2Balance()).to.equal(amount)
-
-            //check deployer has shares
-            expect(await amm.shares(deployer.address)).to.equal(tokens(100))
-            expect(await amm.totalShares()).to.equal(tokens(100))
-
-
-            //LP approves more liquidity 50k tokens
-            amount = tokens(50000)
-            transaction = await token1.connect(liquidityProvider).approve(amm.address, amount)
-            await transaction.wait()
-            transaction = await token2.connect(liquidityProvider).approve(amm.address, amount)
-            await transaction.wait()
-
-            // Calculate token 2 deposit amount
-            let token2Deposit = await amm.calculateToken2Deposit(amount)
-            //LP adds liquidity for approved amount.
-            transaction = await amm.connect(liquidityProvider).addLiquidity(amount, token2Deposit)
-            await transaction.wait()
-
-            expect(await amm.shares(liquidityProvider.address)).to.equal(tokens(50))
-
-            //deployer should still have shares
-            expect(await amm.shares(deployer.address)).to.equal(tokens(100))
-
-            // Pool should have 150 shares
-            expect(await amm.totalShares()).to.equal(tokens(150))
+            console.log(amm.K().toString())
         })
     })
 })

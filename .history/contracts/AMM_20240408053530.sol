@@ -33,8 +33,6 @@ contract AMM {
         } else {
             uint256 share1 = (totalShares *_token1Amount) / token1Balance;
             uint256 share2 = (totalShares *_token2Amount) / token2Balance;
-            require(( share1/ 10**3) == ( share2/ 10**3), 'must provide equal token amounts');
-            share = share1;
         }
 
         // manage pool
@@ -45,12 +43,6 @@ contract AMM {
         // updates shares
         totalShares += share;
         shares[msg.sender] += share;
-    }
-    function calculateToken2Deposit(uint256 _token1Amount) public view returns(uint256 token2Amount) {
-        token2Amount =  (token2Balance * _token1Amount) / token1Balance;
-    }
 
-    function calculateToken1Deposit(uint256 _token2Amount) public view returns(uint256 token1Amount) {
-        token1Amount =  (token1Balance * _token2Amount) / token2Balance;
     }
 }
