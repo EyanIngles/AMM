@@ -19,11 +19,6 @@ async function main() {
 
   console.log(`Dapp Token deployed to: ${Dapp.address}\n`)
   console.log(`Ease Token deployed to: ${Ease.address}\n`)
-
-  const AMM = await hre.ethers.getContractFactory('AMM')
-  let amm = await AMM.deploy(Dapp.address, Ease.address)
-
-  console.log(`AMM contract deployed to: ${amm.address} \n`)
 }
 
 // We recommend this pattern to be able to use async/await everywhere
