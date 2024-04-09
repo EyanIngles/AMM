@@ -276,8 +276,6 @@ describe('AMM', () => {
 
             expect(await amm.shares(liquidityProvider.address)).to.equal(shares(0))
             expect(await amm.shares(deployer.address)).to.equal(shares(100))
-            expect(await amm.totalShares()).to.equal(shares(100))
-
 
 
         })

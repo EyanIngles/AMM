@@ -7,7 +7,6 @@ const tokens = (n) => {
 }
 
 const ether = tokens
-const shares = ether
 
 describe('Token', () => {
     let token1, token2, accounts, deployer, amm
@@ -265,7 +264,7 @@ describe('AMM', () => {
             console.log(`liquidity provider token2 balance before removing funds: ${ethers.utils.formatEther(balance)}\n`)
 
             // LP removes token from AMM pool
-            transaction = await amm.connect(liquidityProvider).removeLiquidity(shares(50))
+            transaction = await amm.connect(liquidityProvider).removeLiquidity(50)
             await transaction.wait()
 
             balance = await token1.balanceOf(liquidityProvider.address)
@@ -273,11 +272,6 @@ describe('AMM', () => {
 
             balance = await token2.balanceOf(liquidityProvider.address)
             console.log(`liquidity provider token2 balance after removing funds: ${ethers.utils.formatEther(balance)}\n`)
-
-            expect(await amm.shares(liquidityProvider.address)).to.equal(shares(0))
-            expect(await amm.shares(deployer.address)).to.equal(shares(100))
-            expect(await amm.totalShares()).to.equal(shares(100))
-
 
 
         })

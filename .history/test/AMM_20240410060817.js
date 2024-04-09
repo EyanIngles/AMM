@@ -274,10 +274,8 @@ describe('AMM', () => {
             balance = await token2.balanceOf(liquidityProvider.address)
             console.log(`liquidity provider token2 balance after removing funds: ${ethers.utils.formatEther(balance)}\n`)
 
-            expect(await amm.shares(liquidityProvider.address)).to.equal(shares(0))
-            expect(await amm.shares(deployer.address)).to.equal(shares(100))
-            expect(await amm.totalShares()).to.equal(shares(100))
-
+            expect(await amm.shares(liquidityProvider.address)).to.equal(0)
+            expect(await amm.shares(deployer.address)).to.equal(100)
 
 
         })

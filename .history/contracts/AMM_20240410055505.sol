@@ -138,11 +138,9 @@ contract AMM {
         (token1Amount, token2Amount) = calculateWithDrawAmount(_share);
         shares[msg.sender] -= _share;
         totalShares -= _share;
-
         token1Balance -= token1Amount;
         token2Balance -= token2Amount;
         K = token1Balance * token2Balance;
-
         token1.transfer(msg.sender, token1Amount);
         token2.transfer(msg.sender, token2Amount);
 
