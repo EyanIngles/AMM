@@ -290,6 +290,7 @@ describe('AMM', () => {
                 await amm.token2Balance(),
                 (await ethers.provider.getBlock(await ethers.provider.getBlockNumber())).timestamp
             )
+            console.log(await eventWithdraw)
 
         })
     })

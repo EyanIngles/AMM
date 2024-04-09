@@ -283,13 +283,14 @@ describe('AMM', () => {
             let eventWithdraw = await expect(transaction).to.emit(amm, 'Withdraw').withArgs(
                 liquidityProvider.address,
                 token1.address,
-                shares(50),
+                shares(),
                 token2.address,
-                amm.totalShares,
+                estimate,
                 await amm.token1Balance(),
                 await amm.token2Balance(),
                 (await ethers.provider.getBlock(await ethers.provider.getBlockNumber())).timestamp
             )
+            console.log(await eventWithdraw)
 
         })
     })

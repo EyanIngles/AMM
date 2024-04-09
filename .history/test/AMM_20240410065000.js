@@ -285,11 +285,12 @@ describe('AMM', () => {
                 token1.address,
                 shares(50),
                 token2.address,
-                amm.totalShares,
+                shares(50),
                 await amm.token1Balance(),
                 await amm.token2Balance(),
                 (await ethers.provider.getBlock(await ethers.provider.getBlockNumber())).timestamp
             )
+            console.log(await eventWithdraw)
 
         })
     })

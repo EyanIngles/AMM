@@ -27,7 +27,7 @@ contract AMM {
     uint256 timestamp
     );
 
-    event Withdraw(
+    event withdraw(
     address user,
     address tokenGive,
     uint256 tokenGiveAmount,
@@ -158,16 +158,7 @@ contract AMM {
         token1.transfer(msg.sender, token1Amount);
         token2.transfer(msg.sender, token2Amount);
 
-        //HW create and emit event.
-        emit Withdraw(
-            msg.sender,
-            address(token1),
-            _share,
-            address(token2),
-            token2Amount,
-            token1Balance,
-            token2Balance,
-            block.timestamp
-        );
+        //HW create and emit event. 
+
     }
 }

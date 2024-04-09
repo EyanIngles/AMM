@@ -278,18 +278,9 @@ describe('AMM', () => {
             expect(await amm.shares(deployer.address)).to.equal(shares(100))
             expect(await amm.totalShares()).to.equal(shares(100))
 
+            result.args = args[]
             // it emits an event after swap
-
-            let eventWithdraw = await expect(transaction).to.emit(amm, 'Withdraw').withArgs(
-                liquidityProvider.address,
-                token1.address,
-                shares(50),
-                token2.address,
-                amm.totalShares,
-                await amm.token1Balance(),
-                await amm.token2Balance(),
-                (await ethers.provider.getBlock(await ethers.provider.getBlockNumber())).timestamp
-            )
+            console.log(args)
 
         })
     })

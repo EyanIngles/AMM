@@ -266,7 +266,7 @@ describe('AMM', () => {
 
             // LP removes token from AMM pool
             transaction = await amm.connect(liquidityProvider).removeLiquidity(shares(50))
-            result = await transaction.wait()
+            await transaction.wait()
 
             balance = await token1.balanceOf(liquidityProvider.address)
             console.log(`liquidity provider token1 balance after removing funds: ${ethers.utils.formatEther(balance)}\n`)
@@ -279,17 +279,7 @@ describe('AMM', () => {
             expect(await amm.totalShares()).to.equal(shares(100))
 
             // it emits an event after swap
-
-            let eventWithdraw = await expect(transaction).to.emit(amm, 'Withdraw').withArgs(
-                liquidityProvider.address,
-                token1.address,
-                shares(50),
-                token2.address,
-                amm.totalShares,
-                await amm.token1Balance(),
-                await amm.token2Balance(),
-                (await ethers.provider.getBlock(await ethers.provider.getBlockNumber())).timestamp
-            )
+            
 
         })
     })
