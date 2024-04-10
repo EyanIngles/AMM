@@ -35,7 +35,7 @@ function App() {
   })
   return (
     <Container>
-      <Navigation />
+      <Navigation  />
 
       <h1 className='my-4 text-center'>React Hardhat Template</h1>
         <p className='text-center'><strong>Your ETH Balance:</strong> {} ETH</p>

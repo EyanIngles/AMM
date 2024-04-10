@@ -9,7 +9,7 @@ import Navigation from './Navigation';
 import Loading from './Loading';
 
 import { loadAccount } from '../store/interactions';
-import { loadProvider, loadNetwork } from '../store/interactions';
+import { loadProvider } from '../store/interactions';
 
 // ABIs: Import your contract ABIs here
 // import TOKEN_ABI from '../abis/Token.json'
@@ -19,27 +19,45 @@ import { loadProvider, loadNetwork } from '../store/interactions';
 
 
 function App() {
+  let account = '0x0...'
+  const [balance, setBalance] = useState(0)
+
+  const [isLoading, setIsLoading] = useState(true)
+
   const dispatch = useDispatch()
 
   const loadBlockchainData = async () => {
-
     const provider = await loadProvider(dispatch)
-
-    const chainId = await loadNetwork(provider, dispatch)
-
     await loadAccount(dispatch)
+
+    // Fetch account balance
+    let balance = await provider.getBalance(account)
+    balance = ethers.utils.formatUnits(balance, 18)
+    setBalance(balance)
+
+    setIsLoading(false)
   }
 
   useEffect(() => {
-    loadBlockchainData()
-  })
-  return (
+    if (isLoading) {
+      loadBlockchainData()
+    }
+  }, [isLoading]);
+
+  return(
     <Container>
-      <Navigation />
+      <Navigation account={account} />
 
       <h1 className='my-4 text-center'>React Hardhat Template</h1>
-        <p className='text-center'><strong>Your ETH Balance:</strong> {} ETH</p>
-        <p className='text-center'>Edit App.js to add your code here.</p>
+
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <p className='text-center'><strong>Your ETH Balance:</strong> {balance} ETH</p>
+          <p className='text-center'>Edit App.js to add your code here.</p>
+        </>
+      )}
     </Container>
   )
 }
