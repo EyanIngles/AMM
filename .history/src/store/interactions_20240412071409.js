@@ -1,6 +1,5 @@
 import { setAccount, setProvider, setNetwork } from '../store/reducers/provider';
 import { setContracts, setSymbols, balancesLoaded } from './reducers/tokens';
-import { setContract } from './reducers/amm';
 import { ethers } from 'ethers';
 import TOKEN_ABI from '../abis/Token.json'
 import AMM_ABI from '../abis/AMM.json'
@@ -42,7 +41,7 @@ export const loadAMM = async (provider, chainId, dispatch) => {
     // config file is unable to be read effectively using chainId as the network chooser. had to sudo code it in
     const amm = new ethers.Contract("0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0", AMM_ABI, provider)
 
-    dispatch(setContract([amm]))
+    dispatch(setContracts([amm]))
     return amm
 }
 

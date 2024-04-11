@@ -9,7 +9,7 @@ import Navigation from './Navigation';
 import Loading from './Loading';
 
 import { loadAccount } from '../store/interactions';
-import { loadProvider, loadNetwork, loadTokens, loadBalances, loadAMM } from '../store/interactions';
+import { loadProvider, loadNetwork, loadTokens, balancesLoaded } from '../store/interactions';
 
 // ABIs: Import your contract ABIs here
 // import TOKEN_ABI from '../abis/Token.json'
@@ -30,9 +30,8 @@ function App() {
     await loadAccount(dispatch)
 
     await loadTokens(provider, chainId, dispatch)
-    await loadAMM(provider, chainId, dispatch)
 
-    await loadBalances(loadTokens, loadAccount, dispatch)
+    await balancesloaded(balance1, balance2, dispatch)
   }
 
   useEffect(() => {
