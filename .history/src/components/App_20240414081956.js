@@ -7,7 +7,6 @@ import { ethers } from 'ethers'
 
 // Components
 import Navigation from './Navigation';
-import Tabs from './Tabs';
 import Swap from './Swap';
 import Deposit from './Deposit';
 import Charts from './Charts';
@@ -49,8 +48,6 @@ function App() {
       <HashRouter>
       <Navigation />
         <hr/>
-
-        <Tabs></Tabs>
         <Routes>
           <Route exact path="/" element={<Swap />}></Route>
           <Route path='/deposit' element={<Deposit />}></Route>

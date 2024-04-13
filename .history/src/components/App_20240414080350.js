@@ -1,17 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { HashRouter, Routes, Route } from 'react-router-dom';
 
 import { Container } from 'react-bootstrap'
 import { ethers } from 'ethers'
 
 // Components
 import Navigation from './Navigation';
-import Tabs from './Tabs';
-import Swap from './Swap';
-import Deposit from './Deposit';
-import Charts from './Charts';
-import Withdraw from './Withdraw';
+
 import { loadAccount } from '../store/interactions';
 import { loadProvider, loadNetwork, loadTokens, loadAMM } from '../store/interactions';
 
@@ -46,18 +41,10 @@ function App() {
   }, []);
   return (
     <Container>
-      <HashRouter>
       <Navigation />
-        <hr/>
 
-        <Tabs></Tabs>
-        <Routes>
-          <Route exact path="/" element={<Swap />}></Route>
-          <Route path='/deposit' element={<Deposit />}></Route>
-          <Route path='/withdraw' element={<Withdraw />}></Route>
-          <Route path='/charts' element={<Charts />}></Route>
-        </Routes>
-      </HashRouter>
+      <hr></hr>
+
     </Container>
   )
 }
