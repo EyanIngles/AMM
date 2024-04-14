@@ -79,7 +79,7 @@ const Swap = () => {
         setPrice(0)
         return
     }
-    if (inputToken === 'DAPP') {
+    if (inputToken === 'Dapp') {
         setPrice(await amm.token2Balance() / await amm.token1Balance())
     } else {
         setPrice(await amm.token1Balance() / await amm.token2Balance())

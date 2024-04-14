@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { swap } from "../store/interactions";
+import { useSelector } from "react-redux";
+
 import { ethers } from "ethers";
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
@@ -24,11 +24,8 @@ const Swap = () => {
   const tokens = useSelector(state => state.tokens.contracts)
   const symbols = useSelector(state => state.tokens.symbols)
   const balances = useSelector(state => state.tokens.balances)
-  const provider = useSelector(state => state.provider.connection)
 
   const amm = useSelector(state => state.amm.contract)
-
-  const dispatch = useDispatch()
 
   const inputHandler = async (e) => {
     if (!inputToken || !outputToken) {
@@ -62,15 +59,6 @@ const Swap = () => {
 
     if (inputToken === outputToken) {
         window.alert("Invalid Token Pair")
-        return
-    }
-
-    const _inputAmount = ethers.utils.parseUnits(inputAmount, 'ether')
-    if (inputToken === "Dapp") {
-        await swap(provider, amm, tokens[0], inputToken, _inputAmount, dispatch)
-    } else {
-        await swap(provider, amm, tokens[1], inputToken, _inputAmount, dispatch)
-
     }
   }
 
@@ -79,7 +67,7 @@ const Swap = () => {
         setPrice(0)
         return
     }
-    if (inputToken === 'DAPP') {
+    if (inputToken === 'Dapp') {
         setPrice(await amm.token2Balance() / await amm.token1Balance())
     } else {
         setPrice(await amm.token1Balance() / await amm.token2Balance())

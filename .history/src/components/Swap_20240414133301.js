@@ -29,7 +29,7 @@ const Swap = () => {
   const amm = useSelector(state => state.amm.contract)
 
   const dispatch = useDispatch()
-
+  
   const inputHandler = async (e) => {
     if (!inputToken || !outputToken) {
         window.alert('Please select token')
@@ -69,7 +69,6 @@ const Swap = () => {
     if (inputToken === "Dapp") {
         await swap(provider, amm, tokens[0], inputToken, _inputAmount, dispatch)
     } else {
-        await swap(provider, amm, tokens[1], inputToken, _inputAmount, dispatch)
 
     }
   }
@@ -79,7 +78,7 @@ const Swap = () => {
         setPrice(0)
         return
     }
-    if (inputToken === 'DAPP') {
+    if (inputToken === 'Dapp') {
         setPrice(await amm.token2Balance() / await amm.token1Balance())
     } else {
         setPrice(await amm.token1Balance() / await amm.token2Balance())

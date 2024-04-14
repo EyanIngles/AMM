@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { swap } from "../store/interactions";
-import { ethers } from "ethers";
+import { useSelector } from "react-redux";
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
 import InputGroup from "react-bootstrap/InputGroup";
@@ -15,76 +13,15 @@ const Swap = () => {
     const [price, setPrice] = useState(0)
     const [inputToken, setInputToken] = useState(null)
     const [outputToken, setOutputToken] = useState(null)
-    const [inputAmount, setInputAmount] = useState(0)
-    const [outputAmount, setOutputAmount] = useState(0)
 
 
   const account = useSelector(state => state.provider.account)
-
   const tokens = useSelector(state => state.tokens.contracts)
-  const symbols = useSelector(state => state.tokens.symbols)
-  const balances = useSelector(state => state.tokens.balances)
-  const provider = useSelector(state => state.provider.connection)
-
   const amm = useSelector(state => state.amm.contract)
 
-  const dispatch = useDispatch()
-
-  const inputHandler = async (e) => {
-    if (!inputToken || !outputToken) {
-        window.alert('Please select token')
-        return
-    }
-    if (inputToken === outputToken) {
-        window.alert('Invalid token pair')
-        return
-    }
-    if (inputToken === 'Dapp') {
-        setInputAmount(e.target.value)
-        const _token1Amount = ethers.utils.parseUnits(e.target.value, 'ether')
-        const result = await amm.calculateToken1Swap(_token1Amount)
-        const _token2Amount = ethers.utils.formatUnits(result.toString(), 'ether')
-
-        setOutputAmount(_token2Amount.toString())
-    } else {
-        setInputAmount(e.target.value)
-
-        const _token2Amount = ethers.utils.parseUnits(e.target.value, 'ether')
-        const result = await amm.calculateToken2Swap(_token2Amount)
-        const _token1Amount = ethers.utils.formatUnits(result.toString(), 'ether')
-
-        setOutputAmount(_token1Amount.toString())
-    }
-  }
-
-  const swapHandler = async (e) => {
-    e.preventDefault()
-
-    if (inputToken === outputToken) {
-        window.alert("Invalid Token Pair")
-        return
-    }
-
-    const _inputAmount = ethers.utils.parseUnits(inputAmount, 'ether')
-    if (inputToken === "Dapp") {
-        await swap(provider, amm, tokens[0], inputToken, _inputAmount, dispatch)
-    } else {
-        await swap(provider, amm, tokens[1], inputToken, _inputAmount, dispatch)
-
-    }
-  }
-
   const getPrice = async () => {
-    if (inputToken === outputToken) {
-        setPrice(0)
-        return
-    }
-    if (inputToken === 'DAPP') {
-        setPrice(await amm.token2Balance() / await amm.token1Balance())
-    } else {
-        setPrice(await amm.token1Balance() / await amm.token2Balance())
-    }
     console.log({ inputToken, outputToken})
+    setPrice(await amm.token2Balance() / await amm.token1Balance())
   }
 
   useEffect(() => {
@@ -97,23 +34,18 @@ const Swap = () => {
     <div>
         <Card style ={{ maxWidth: '450px' }} className="mx-auto px-4">
             {account ?  (
-                <Form onSubmit={swapHandler} style={{ maxWidth: '450px', margin: '50px auto' }}>
+                <Form style={{ maxWidth: '450px', margin: '50px auto' }}>
                     <Row className='my-3'>
                         <div className="d-flex justify-content-between">
                             <Form.Label><strong>Input:</strong></Form.Label>
-                            <Form.Text muted> Balance: {inputToken === 'Dapp' ? (
-                                balances[0]
-                            ) : inputToken === 'Ease' ? (
-                                balances[1]
-                            ) : 0 }</Form.Text>
+                            <Form.Text muted> Balance:</Form.Text>
                         </div>
                         <InputGroup>
                             <Form.Control type="number"
                             placeholder="0.0"
                             min='0.0'
                             step='any'
-                            onChange={(e) => inputHandler(e)}
-                            disabled={!inputToken}>
+                            disabled={false}>
                             </Form.Control>
                             <DropdownButton
                         vairant='outline-secondary'
@@ -126,16 +58,11 @@ const Swap = () => {
                     <Row className="my-4">
                     <div className="d-flex justify-content-between">
                             <Form.Label><strong>Output:</strong></Form.Label>
-                            <Form.Text muted> Balance: {outputToken === 'Dapp' ? (
-                                balances[0]
-                            ) : outputToken === 'Ease' ? (
-                                balances[1]
-                            ) : 0 }</Form.Text>
+                            <Form.Text muted> Balance:</Form.Text>
                         </div>
                         <InputGroup>
                             <Form.Control type="number"
                             placeholder="0.0"
-                            value={ outputAmount === 0 ? "" : outputAmount }
                             disabled>
                             </Form.Control>
                             <DropdownButton

@@ -64,11 +64,11 @@ export const swap = async (provider, amm, token, symbol, amount, dispatch) => {
 
     transaction = await token.connect(signer).approve(amm.address, amount)
     await transaction.wait()
-
-    if (symbol === "DAPP"){
-        transaction = await amm.connect(signer).swapToken2(amount)
-    } else {
+    
+    if (symbol === "Dapp"){
         transaction = await amm.connect(signer).swapToken1(amount)
+    } else {
+        transaction = await amm.connect(signer).swapToken2(amount)
     }
     await transaction.wait()
 }

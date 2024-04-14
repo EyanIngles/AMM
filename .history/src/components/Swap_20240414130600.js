@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { swap } from "../store/interactions";
+import { useSelector } from "react-redux";
+
 import { ethers } from "ethers";
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
@@ -22,13 +22,10 @@ const Swap = () => {
   const account = useSelector(state => state.provider.account)
 
   const tokens = useSelector(state => state.tokens.contracts)
-  const symbols = useSelector(state => state.tokens.symbols)
-  const balances = useSelector(state => state.tokens.balances)
-  const provider = useSelector(state => state.provider.connection)
+  const symbol = useSelector(state => state.tokens.symbol)
+  const balance = useSelector(state => state.tokens.balance)
 
   const amm = useSelector(state => state.amm.contract)
-
-  const dispatch = useDispatch()
 
   const inputHandler = async (e) => {
     if (!inputToken || !outputToken) {
@@ -57,29 +54,12 @@ const Swap = () => {
     }
   }
 
-  const swapHandler = async (e) => {
-    e.preventDefault()
-
-    if (inputToken === outputToken) {
-        window.alert("Invalid Token Pair")
-        return
-    }
-
-    const _inputAmount = ethers.utils.parseUnits(inputAmount, 'ether')
-    if (inputToken === "Dapp") {
-        await swap(provider, amm, tokens[0], inputToken, _inputAmount, dispatch)
-    } else {
-        await swap(provider, amm, tokens[1], inputToken, _inputAmount, dispatch)
-
-    }
-  }
-
   const getPrice = async () => {
     if (inputToken === outputToken) {
         setPrice(0)
         return
     }
-    if (inputToken === 'DAPP') {
+    if (inputToken === 'Dapp') {
         setPrice(await amm.token2Balance() / await amm.token1Balance())
     } else {
         setPrice(await amm.token1Balance() / await amm.token2Balance())
@@ -97,15 +77,16 @@ const Swap = () => {
     <div>
         <Card style ={{ maxWidth: '450px' }} className="mx-auto px-4">
             {account ?  (
-                <Form onSubmit={swapHandler} style={{ maxWidth: '450px', margin: '50px auto' }}>
+                <Form style={{ maxWidth: '450px', margin: '50px auto' }}>
                     <Row className='my-3'>
                         <div className="d-flex justify-content-between">
                             <Form.Label><strong>Input:</strong></Form.Label>
-                            <Form.Text muted> Balance: {inputToken === 'Dapp' ? (
-                                balances[0]
-                            ) : inputToken === 'Ease' ? (
-                                balances[1]
-                            ) : 0 }</Form.Text>
+                            <Form.Text muted> Balance: {inputToken === symbol[0] ? (
+                                balance[0]
+                            ) : inputToken === symbol[1] ? (
+                                balance[1]
+                            ) : 0
+                            }</Form.Text>
                         </div>
                         <InputGroup>
                             <Form.Control type="number"
@@ -126,11 +107,7 @@ const Swap = () => {
                     <Row className="my-4">
                     <div className="d-flex justify-content-between">
                             <Form.Label><strong>Output:</strong></Form.Label>
-                            <Form.Text muted> Balance: {outputToken === 'Dapp' ? (
-                                balances[0]
-                            ) : outputToken === 'Ease' ? (
-                                balances[1]
-                            ) : 0 }</Form.Text>
+                            <Form.Text muted> Balance:</Form.Text>
                         </div>
                         <InputGroup>
                             <Form.Control type="number"
