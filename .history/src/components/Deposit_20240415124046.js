@@ -30,7 +30,10 @@ const Deposit = () => {
 const dispatch = useDispatch()
 
     return (
-        <div>
+      <div>Deposit</div>
+    );
+  }
+<div>
         <Card style ={{ maxWidth: '450px' }} className="mx-auto px-4">
             {account ?  (
                 <Form onSubmit={""} style={{ maxWidth: '450px', margin: '50px auto' }}>
@@ -73,7 +76,7 @@ const dispatch = useDispatch()
                     </Row>
                     <Row className="my-3">
                         <Form.Text muted>
-                            Exchange Rate: {""}
+                            Exchange Rate: {price}
                         </Form.Text>
                     </Row>
                 </Form>
@@ -88,6 +91,5 @@ const dispatch = useDispatch()
 
     </div>
 
-);
-}
+
   export default Deposit;

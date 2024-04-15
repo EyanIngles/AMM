@@ -30,7 +30,10 @@ const Deposit = () => {
 const dispatch = useDispatch()
 
     return (
-        <div>
+      <div>Deposit</div>
+    );
+  }
+<div>
         <Card style ={{ maxWidth: '450px' }} className="mx-auto px-4">
             {account ?  (
                 <Form onSubmit={""} style={{ maxWidth: '450px', margin: '50px auto' }}>
@@ -48,32 +51,42 @@ const dispatch = useDispatch()
                             <DropdownButton
                         vairant='outline-secondary'
                         title={"Select Token"}>
-                            <DropdownItem >Dapp</DropdownItem>
-                            <DropdownItem >Ease</DropdownItem>
+                            <DropdownItem onClick={(e) => setInputToken(e.target.innerHTML)}>Dapp</DropdownItem>
+                            <DropdownItem onClick={(e) => setInputToken(e.target.innerHTML)}>Ease</DropdownItem>
                         </DropdownButton>
                         </InputGroup>
                     </Row>
                     <Row className="my-4">
                     <div className="d-flex justify-content-between">
                             <Form.Label><strong>Output:</strong></Form.Label>
-                            <Form.Text muted> Balance: </Form.Text>
+                            <Form.Text muted> Balance: {outputToken === 'Dapp' ? (
+                                balances[0]
+                            ) : outputToken === 'Ease' ? (
+                                balances[1]
+                            ) : 0 }</Form.Text>
                         </div>
                         <InputGroup>
                             <Form.Control type="number"
                             placeholder="0.0"
+                            value={ outputAmount === 0 ? "" : outputAmount }
                             disabled>
                             </Form.Control>
                             <DropdownButton
                         vairant='outline-secondary'
-                        title={"Select Token"}>
-                            <DropdownItem >Dapp</DropdownItem>
-                            <DropdownItem >Ease</DropdownItem>
+                        title={outputToken ? outputToken : "Select Token"}>
+                            <DropdownItem onClick={(e) => setOutputToken(e.target.innerHTML)}>Dapp</DropdownItem>
+                            <DropdownItem onClick={(e) => setOutputToken(e.target.innerHTML)}>Ease</DropdownItem>
                         </DropdownButton>
                         </InputGroup>
                     </Row>
                     <Row className="my-3">
+                        {isSwapping ? (<Loading></Loading>) : (
+                        <Button type='submit'>Swap</Button>
+                        ) }
+
+
                         <Form.Text muted>
-                            Exchange Rate: {""}
+                            Exchange Rate: {price}
                         </Form.Text>
                     </Row>
                 </Form>
@@ -88,6 +101,5 @@ const dispatch = useDispatch()
 
     </div>
 
-);
-}
+
   export default Deposit;
