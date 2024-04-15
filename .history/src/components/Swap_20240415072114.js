@@ -12,6 +12,7 @@ import Row from "react-bootstrap/Row";
 import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import Loading from './Loading';
 import Alert from "./Alert";
+import { transactionHash } from "../store/reducers/amm";
 
 
 const Swap = () => {
@@ -32,8 +33,6 @@ const Swap = () => {
 
   const amm = useSelector(state => state.amm.contract)
   const isSwapping = useSelector(state => state.amm.swapping.isSwapping)
-  const isSuccess = useSelector(state => state.amm.swapping.isSuccess)
-  const transactionHash = useSelector(state => state.amm.swapping.transactionHash)
 
   const dispatch = useDispatch()
 
@@ -177,31 +176,25 @@ const Swap = () => {
                 </p>
             )}
         </Card>
-        {isSwapping ? (
-        <Alert
-          message={'Swap Pending...'}
-          transactionHash={null}
-          variant={'info'}
-          setShowAlert={setShowAlert}
-        />
-      ) : isSuccess && showAlert ? (
-        <Alert
-          message={'Swap Successful'}
-          transactionHash={transactionHash}
-          variant={'success'}
-          setShowAlert={setShowAlert}
-        />
-      ) : !isSuccess && showAlert ? (
-        <Alert
-          message={'Swap Failed'}
-          transactionHash={null}
-          variant={'danger'}
-          setShowAlert={setShowAlert}
-        />
-      ) : (
-        <></>
-      )}
-
+                {isSwapping ? (
+                        <Alert
+                        message={'Swap Pending...'}
+                        transactionHash={null}
+                        variant={'info'}
+                        setShowAlert={setShowAlert}/>
+                ) : isSuccess && showAlert ? (
+                        <Alert
+                        message={'Swap Successful...'}
+                        transactionHash={transactionHash}
+                        variant={'success'}
+                        setShowAlert={setShowAlert}/>
+                ) : !isSuccess && showAlert ? (
+                        <Alert
+                        message={'Swap Failed...'}
+                        transactionHash={null}
+                        variant={'danger'}
+                        setShowAlert={setShowAlert}/>
+                ) : (<></>)}
     </div>
   );
 }

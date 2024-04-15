@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 
 const Loading = () => {
     return (
-        <div className='text-center my-0'>
+        <div className='text-center my-1'>
             <Button variant="primary" disabled>
             <Spinner animation="border" role="status" style={{ display:'block',
             margin: '0 auto'}}>

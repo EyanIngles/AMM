@@ -177,31 +177,26 @@ const Swap = () => {
                 </p>
             )}
         </Card>
-        {isSwapping ? (
-        <Alert
-          message={'Swap Pending...'}
-          transactionHash={null}
-          variant={'info'}
-          setShowAlert={setShowAlert}
-        />
-      ) : isSuccess && showAlert ? (
-        <Alert
-          message={'Swap Successful'}
-          transactionHash={transactionHash}
-          variant={'success'}
-          setShowAlert={setShowAlert}
-        />
-      ) : !isSuccess && showAlert ? (
-        <Alert
-          message={'Swap Failed'}
-          transactionHash={null}
-          variant={'danger'}
-          setShowAlert={setShowAlert}
-        />
-      ) : (
-        <></>
-      )}
-
+                {isSwapping ? (
+                        <Alert
+                        message={'Swap Pending...'}
+                        transactionHash={null}
+                        variant={'info'}
+                        setShowAlert={setShowAlert}/>
+                ) : isSuccess && showAlert ? (
+                        <Alert
+                        message={'Swap Successful!'}
+                        transactionHash={transactionHash}
+                        variant={'success'}
+                        setShowAlert={setShowAlert}/>
+                ) : !isSuccess && showAlert ? (
+                        <Alert
+                        message={'Swap Failed!!!'}
+                        transactionHash={null}
+                        variant={'danger'}
+                        setShowAlert={setShowAlert}/>
+                ) : (<></>)}
+                
     </div>
   );
 }
