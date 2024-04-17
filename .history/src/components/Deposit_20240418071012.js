@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row";
 import Loading from './Loading';
 import Alert from "./Alert";
 
+const account = "0x012..."
 const Deposit = () => {
   const [showAlert, setShowAlert] = useState(false)
 

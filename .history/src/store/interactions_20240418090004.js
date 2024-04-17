@@ -86,7 +86,7 @@ export const removeLiquidity = async (provider, amm, shares, dispatch) => {
         dispatch(withdrawRequest())
 
         const signer = await provider.getSigner()
-        let transaction = await amm.connect(signer).removeLiquidity(shares)
+        let transaction = await tokens[0].connect(signer).removeLiquidity(shares)
         await transaction.wait()
 
         dispatch(withdrawSuccess(transaction.hash))

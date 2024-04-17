@@ -1,46 +1,32 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeLiquidity, loadBalances } from "../store/interactions";
+import { addLiquidity, loadBalances } from "../store/interactions";
 import { ethers } from "ethers";
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
+import DropdownButton from "react-bootstrap/DropdownButton";
+
 import Loading from './Loading';
 import Alert from "./Alert";
 
 
 const Withdraw = () => {
   const [showAlert, setShowAlert] = useState(false)
-  const [amount, setAmount] = useState(0)
 
   const provider = useSelector(state => state.provider.connection)
   const account = useSelector(state => state.provider.account)
 
-  const tokens = useSelector(state => state.tokens.contracts)
-  const amm = useSelector(state => state.amm.contract)
-  const balances = useSelector(state => state.tokens.balances)
-  const shares = useSelector(state => state.amm.shares)
-
-  const isWithdrawing = useSelector(state => state.amm.withdrawing.isWithdrawing)
-  const isSuccess = useSelector(state => state.amm.withdrawing.isSuccess)
-  const transactionHash = useSelector(state => state.amm.withdrawing.transactionHash)
-
-
-  const dispatch = useDispatch()
-
 
   const withdrawHandler = async (e) => {
     e.preventDefault()
-    setShowAlert(false)
 
-    const _shares = ethers.utils.parseEther(amount.toString())
-    await removeLiquidity(provider, amm, _shares, dispatch)
 
-    await loadBalances(amm, tokens, account, dispatch)
-    setShowAlert(true)
-    setAmount(0)
+    console.log("withdraw handler...")
+
   }
     return (
      <div>
@@ -50,28 +36,24 @@ const Withdraw = () => {
                     <Row className='my-3'>
                         <div className="d-flex justify-content-between">
                             <Form.Label><strong>Input:</strong></Form.Label>
-                            <Form.Text muted> Shares: {shares} </Form.Text>
+                            <Form.Text muted> Shares: {0} </Form.Text>
                         </div>
                         <InputGroup>
                             <Form.Control type="number"
                             placeholder="0"
                             min='0.0'
                             step='any'
-                            id="shares"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}></Form.Control>
+                            id="shares"></Form.Control>
                             <InputGroup.Text style={{ width: "100px"}} className="justify-content-center">Shares</InputGroup.Text>
                         </InputGroup>
                     </Row>
                     <Row className="my-3">
-                    {isWithdrawing ? (<Loading></Loading>) : (
                         <Button type='submit'>Withdraw</Button>
-                        ) }
                     </Row>
                     <hr/>
                     <Row>
-                      <p><strong>Dap Balance:</strong> {balances[0]}</p>
-                      <p><strong>Ease Balance:</strong> {balances[1]}</p>
+                      <p><strong>Dap Balance:</strong>0</p>
+                      <p><strong>Ease Balance:</strong>0</p>
                     </Row>
                 </Form>
             ) : (
@@ -82,30 +64,7 @@ const Withdraw = () => {
                 </p>
             )}
         </Card>
-        {isWithdrawing ? (
-        <Alert
-          message={'Withdrawing Pending...'}
-          transactionHash={null}
-          variant={'info'}
-          setShowAlert={setShowAlert}
-        />
-      ) : isSuccess && showAlert ? (
-        <Alert
-          message={'Withdraw Successful'}
-          transactionHash={transactionHash}
-          variant={'success'}
-          setShowAlert={setShowAlert}
-        />
-      ) : !isSuccess && showAlert ? (
-        <Alert
-          message={'Withdraw Failed'}
-          transactionHash={null}
-          variant={'danger'}
-          setShowAlert={setShowAlert}
-        />
-      ) : (
-        <></>
-      )}
+
     </div>
     );
   }

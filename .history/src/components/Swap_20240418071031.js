@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
 import InputGroup from "react-bootstrap/InputGroup";
+import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
@@ -25,6 +26,7 @@ const Swap = () => {
   const account = useSelector(state => state.provider.account)
 
   const tokens = useSelector(state => state.tokens.contracts)
+  const symbols = useSelector(state => state.tokens.symbols)
   const balances = useSelector(state => state.tokens.balances)
   const provider = useSelector(state => state.provider.connection)
 

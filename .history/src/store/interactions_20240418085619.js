@@ -1,9 +1,6 @@
 import { setAccount, setProvider, setNetwork } from '../store/reducers/provider';
 import { setContracts, setSymbols, balancesLoaded } from './reducers/tokens';
-import { setContract, sharesLoaded,
-    swapRequest, swapSuccess, swapFail,
-    depositRequest, depositSuccess, depositFail,
-    withdrawRequest, withdrawSuccess, withdrawFail} from './reducers/amm';
+import { setContract, sharesLoaded, swapRequest, swapSuccess, swapFail, depositRequest, depositSuccess, depositFail } from './reducers/amm';
 import { ethers } from 'ethers';
 import TOKEN_ABI from '../abis/Token.json'
 import AMM_ABI from '../abis/AMM.json'
@@ -86,12 +83,17 @@ export const removeLiquidity = async (provider, amm, shares, dispatch) => {
         dispatch(withdrawRequest())
 
         const signer = await provider.getSigner()
-        let transaction = await amm.connect(signer).removeLiquidity(shares)
+        let transaction = await tokens[0].connect(signer).removeLiquidity(shares)
         await transaction.wait()
 
-        dispatch(withdrawSuccess(transaction.hash))
+        transaction = await tokens[1].connect(signer).approve(amm.address, amounts[1])
+        await transaction.wait()
+
+        transaction = await amm.connect(signer).addLiquidity(amounts[0], amounts[1])
+        await transaction.wait()
+        dispatch(depositSuccess(transaction.hash))
     } catch(error) {
-        dispatch(withdrawFail())
+        dispatch(depositFail())
     }
 }
 

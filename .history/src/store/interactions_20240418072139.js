@@ -1,9 +1,6 @@
 import { setAccount, setProvider, setNetwork } from '../store/reducers/provider';
 import { setContracts, setSymbols, balancesLoaded } from './reducers/tokens';
-import { setContract, sharesLoaded,
-    swapRequest, swapSuccess, swapFail,
-    depositRequest, depositSuccess, depositFail,
-    withdrawRequest, withdrawSuccess, withdrawFail} from './reducers/amm';
+import { setContract, sharesLoaded, swapRequest, swapSuccess, swapFail, depositRequest, depositSuccess, depositFail } from './reducers/amm';
 import { ethers } from 'ethers';
 import TOKEN_ABI from '../abis/Token.json'
 import AMM_ABI from '../abis/AMM.json'
@@ -80,20 +77,7 @@ export const addLiquidity = async (provider, amm, tokens, amounts, dispatch) => 
         dispatch(depositFail())
     }
 }
-// Remove Liquidity
-export const removeLiquidity = async (provider, amm, shares, dispatch) => {
-    try {
-        dispatch(withdrawRequest())
 
-        const signer = await provider.getSigner()
-        let transaction = await amm.connect(signer).removeLiquidity(shares)
-        await transaction.wait()
-
-        dispatch(withdrawSuccess(transaction.hash))
-    } catch(error) {
-        dispatch(withdrawFail())
-    }
-}
 
 //Swap
 
@@ -107,11 +91,11 @@ export const swap = async (provider, amm, token, symbol, amount, dispatch) => {
     transaction = await token.connect(signer).approve(amm.address, amount)
     await transaction.wait()
 
-    if (symbol === "DAPP") {
-        transaction = await amm.connect(signer).swapToken1(amount)
-      } else {
+    if (symbol === "ES"){
         transaction = await amm.connect(signer).swapToken2(amount)
-      }
+    } else {
+        transaction = await amm.connect(signer).swapToken1(amount)
+    }
     await transaction.wait()
 
     dispatch(swapSuccess(transaction.hash))

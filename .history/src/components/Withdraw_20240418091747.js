@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeLiquidity, loadBalances } from "../store/interactions";
+import { loadshares, removeLiquidity, loadBalances } from "../store/interactions";
 import { ethers } from "ethers";
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import Loading from './Loading';
 import Alert from "./Alert";
 
@@ -38,7 +40,7 @@ const Withdraw = () => {
     const _shares = ethers.utils.parseEther(amount.toString())
     await removeLiquidity(provider, amm, _shares, dispatch)
 
-    await loadBalances(amm, tokens, account, dispatch)
+
     setShowAlert(true)
     setAmount(0)
   }

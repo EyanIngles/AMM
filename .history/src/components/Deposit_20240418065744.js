@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addLiquidity, loadBalances } from "../store/interactions";
 import { ethers } from "ethers";
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
 import InputGroup from "react-bootstrap/InputGroup";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import Loading from './Loading';
 import Alert from "./Alert";
 
+const account = "0x012..."
 const Deposit = () => {
+  const [price, setPrice] = useState(0)
   const [showAlert, setShowAlert] = useState(false)
 
+  const [inputToken, setInputToken] = useState(null)
+  const [outputToken, setOutputToken] = useState(null)
   const [token1Amount, setToken1Amount] = useState(0)
   const [token2Amount, setToken2Amount] = useState(0)
 

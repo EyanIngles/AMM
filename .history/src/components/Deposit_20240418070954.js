@@ -10,9 +10,13 @@ import Row from "react-bootstrap/Row";
 import Loading from './Loading';
 import Alert from "./Alert";
 
+const account = "0x012..."
 const Deposit = () => {
+  const [price, setPrice] = useState(0)
   const [showAlert, setShowAlert] = useState(false)
 
+  const [inputToken, setInputToken] = useState(null)
+  const [outputToken, setOutputToken] = useState(null)
   const [token1Amount, setToken1Amount] = useState(0)
   const [token2Amount, setToken2Amount] = useState(0)
 

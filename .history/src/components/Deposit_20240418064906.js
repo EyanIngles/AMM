@@ -1,18 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addLiquidity, loadBalances } from "../store/interactions";
 import { ethers } from "ethers";
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
 import InputGroup from "react-bootstrap/InputGroup";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
 import Loading from './Loading';
 import Alert from "./Alert";
 
+const account = "0x012..."
 const Deposit = () => {
+  const [price, setPrice] = useState(0)
   const [showAlert, setShowAlert] = useState(false)
 
+  const [inputToken, setInputToken] = useState(null)
+  const [outputToken, setOutputToken] = useState(null)
   const [token1Amount, setToken1Amount] = useState(0)
   const [token2Amount, setToken2Amount] = useState(0)
 
@@ -58,7 +65,6 @@ const Deposit = () => {
 
   const depositHandler = async (e) => {
     e.preventDefault()
-    setShowAlert(false)
 
     console.log("deposit handler...")
     const _token1Amount = ethers.utils.parseEther(token1Amount)
@@ -67,9 +73,6 @@ const Deposit = () => {
 
     await addLiquidity(provider, amm, tokens, [_token1Amount, _token2Amount], dispatch)
     await loadBalances(amm, tokens, account, dispatch)
-
-    setShowAlert(true)
-
   }
 
 
@@ -111,9 +114,7 @@ const Deposit = () => {
                         </InputGroup>
                     </Row>
                     <Row className="my-3">
-                    {isDepositing ? (<Loading></Loading>) : (
-                        <Button type='submit'>Deposit</Button>
-                        ) }
+                      <Button type='submit'>deposit</Button>
                     </Row>
 
                 </Form>
@@ -125,30 +126,7 @@ const Deposit = () => {
                 </p>
             )}
         </Card>
-        {isDepositing ? (
-        <Alert
-          message={'Deposit Pending...'}
-          transactionHash={null}
-          variant={'info'}
-          setShowAlert={setShowAlert}
-        />
-      ) : isSuccess && showAlert ? (
-        <Alert
-          message={'Deposit Successful'}
-          transactionHash={transactionHash}
-          variant={'success'}
-          setShowAlert={setShowAlert}
-        />
-      ) : !isSuccess && showAlert ? (
-        <Alert
-          message={'Deposit Failed'}
-          transactionHash={null}
-          variant={'danger'}
-          setShowAlert={setShowAlert}
-        />
-      ) : (
-        <></>
-      )}
+
     </div>
 
 );
