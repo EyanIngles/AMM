@@ -66,7 +66,7 @@ const Deposit = () => {
 
 
     await addLiquidity(provider, amm, tokens, [_token1Amount, _token2Amount], dispatch)
-    await loadBalances(amm, tokens, account, dispatch)
+    await loadBalances(amm, tokens, accounts, dispatch)
   }
 
 

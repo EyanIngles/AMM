@@ -70,7 +70,7 @@ export const addLiquidity = async (provider, amm, tokens, amounts, dispatch) => 
     await transaction.wait()
 
     transaction = await amm.connect(signer).addLiquidity(amounts[0], amounts[1])
-    await transaction.wait()
+    await transaction.wait
 }
 
 //Swap

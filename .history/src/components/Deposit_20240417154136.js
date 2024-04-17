@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addLiquidity, loadBalances } from "../store/interactions";
+import { swap, loadBalances } from "../store/interactions";
 import { ethers } from "ethers";
 import Card from "react-bootstrap/Card"
 import Form from "react-bootstrap/Form"
@@ -19,8 +19,8 @@ const Deposit = () => {
   const [showAlert, setShowAlert] = useState(false)
   const [inputToken, setInputToken] = useState(null)
   const [outputToken, setOutputToken] = useState(null)
-  const [token1Amount, setToken1Amount] = useState(0)
-  const [token2Amount, setToken2Amount] = useState(0)
+  const [inputAmount, setInputAmount] = useState(0)
+  const [outputAmount, setOutputAmount] = useState(0)
 
 
   const provider = useSelector(state => state.provider.connection)
@@ -30,45 +30,16 @@ const Deposit = () => {
   const symbols = useSelector(state => state.tokens.symbols)
   const balances = useSelector(state => state.tokens.balances)
 
-  const amm = useSelector(state => state.amm.contract)
-
-  const dispatch = useDispatch()
-
-
   const amountHandler = async (e) => {
-    if (e.target.id === 'token1') {
-      setToken1Amount(e.target.value)
-
-      // Fetch value from chain
-      const _token1Amount = ethers.utils.parseEther(e.target.value)
-      const result = await amm.calculateToken2Deposit(_token1Amount)
-      const _token2Amount = ethers.utils.formatEther(result.toString())
-
-      setToken2Amount(_token2Amount)
-    } else {
-      setToken2Amount(e.target.value)
-
-      // Fetch value from chain
-      const _token2Amount = ethers.utils.parseEther(e.target.value)
-      const result = await amm.calculateToken1Deposit(_token2Amount)
-      const _token1Amount = ethers.utils.formatEther(result.toString())
-
-      setToken1Amount(_token1Amount)
-    }
+    console.log("amount handler...")
   }
-
   const depositHandler = async (e) => {
-    e.preventDefault()
-
     console.log("deposit handler...")
-    const _token1Amount = ethers.utils.parseEther(token1Amount)
-    const _token2Amount = ethers.utils.parseEther(token2Amount)
-
-
-    await addLiquidity(provider, amm, tokens, [_token1Amount, _token2Amount], dispatch)
-    await loadBalances(amm, tokens, account, dispatch)
   }
 
+
+
+const dispatch = useDispatch()
 
     return (
         <div>
@@ -83,8 +54,7 @@ const Deposit = () => {
                             min='0.0'
                             step='any'
                             id="token1"
-                            onChange={(e) => amountHandler(e)}
-                            value={token1Amount === 0 ? "" : token1Amount}>
+                            onChange={(e) => amountHandler(e)}>
                             </Form.Control>
                             <InputGroup.Text style={{ width: "100px" }} className="justify-content-center">
                                 { symbols && symbols[0] }
@@ -98,9 +68,7 @@ const Deposit = () => {
                             placeholder="0.0"
                             step='any'
                             id="token2"
-                            onChange={(e) => amountHandler(e)}
-                            value={token2Amount === 0 ? "" : token2Amount}
-                            >
+                            onChange={(e) => amountHandler(e)}>
                             </Form.Control>
                             <InputGroup.Text style={{ width: "100px" }} className="justify-content-center">
                                 { symbols && symbols[1] }

@@ -29,10 +29,7 @@ const Deposit = () => {
   const tokens = useSelector(state => state.tokens.contracts)
   const symbols = useSelector(state => state.tokens.symbols)
   const balances = useSelector(state => state.tokens.balances)
-
   const amm = useSelector(state => state.amm.contract)
-
-  const dispatch = useDispatch()
 
 
   const amountHandler = async (e) => {
@@ -59,16 +56,12 @@ const Deposit = () => {
 
   const depositHandler = async (e) => {
     e.preventDefault()
-
     console.log("deposit handler...")
-    const _token1Amount = ethers.utils.parseEther(token1Amount)
-    const _token2Amount = ethers.utils.parseEther(token2Amount)
-
-
-    await addLiquidity(provider, amm, tokens, [_token1Amount, _token2Amount], dispatch)
-    await loadBalances(amm, tokens, account, dispatch)
   }
 
+
+
+const dispatch = useDispatch()
 
     return (
         <div>

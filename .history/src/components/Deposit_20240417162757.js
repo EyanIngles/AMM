@@ -59,14 +59,9 @@ const Deposit = () => {
 
   const depositHandler = async (e) => {
     e.preventDefault()
-
     console.log("deposit handler...")
-    const _token1Amount = ethers.utils.parseEther(token1Amount)
-    const _token2Amount = ethers.utils.parseEther(token2Amount)
-
 
     await addLiquidity(provider, amm, tokens, [_token1Amount, _token2Amount], dispatch)
-    await loadBalances(amm, tokens, account, dispatch)
   }
 
 
