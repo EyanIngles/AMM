@@ -32,8 +32,8 @@ return account
 export const loadTokens = async (provider, chainId, dispatch) => {
     const DappToken = new ethers.Contract(config[chainId].Dapp.address, TOKEN_ABI, provider)
     const EaseToken = new ethers.Contract(config[chainId].Ease.address, TOKEN_ABI, provider)
-    dispatch(setContracts([EaseToken, DappToken]))
-    dispatch(setSymbols([await EaseToken.symbol(), await DappToken.symbol()]))
+    dispatch(setContracts([DappToken, EaseToken]))
+    dispatch(setSymbols([await DappToken.symbol(), await EaseToken.symbol()]))
 }
 export const loadAMM = async (provider, chainId, dispatch) => {
     const amm = new ethers.Contract(config[chainId].amm.address, AMM_ABI, provider)
